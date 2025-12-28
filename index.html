@@ -3,199 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Dad</title>
+    <title>Dad's Birthday Quest</title>
     <style>
         :root {
             --gold: #D4AF37;
             --bg: #050505;
             --card: #111;
             --text: #f0f0f0;
+            --success: #2ecc71;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             margin: 0;
             line-height: 1.6;
-            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* Direct Header - Replaces Countdown */
-        #header {
-            height: 40vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        #main-content { max-width: 850px; margin: 0 auto; padding: 20px; }
+
+        .intro-message {
             text-align: center;
+            padding: 80px 20px;
             border-bottom: 1px solid #222;
         }
 
-        #main-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            font-weight: 300;
-            letter-spacing: 5px;
-            margin-bottom: 60px;
-            color: var(--gold);
-        }
-
-        /* Highlights Styling */
-        .highlight {
-            margin-bottom: 100px;
-            text-align: center;
-        }
-
-        .img-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .img-grid img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 2px;
-            filter: brightness(0.9);
-            transition: all 0.4s ease;
-        }
-
-        .img-grid img:hover { filter: brightness(1.1); }
-
-        .highlight-text h3 {
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-bottom: 15px;
-            color: var(--gold);
-        }
-
-        .highlight-text p {
-            color: #aaa;
-            max-width: 700px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-        }
-
-        /* Letters Section */
-        .letters-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .letter {
-            padding: 40px;
+        .quiz-container {
             background: var(--card);
-            border: 1px solid #222;
-            transition: border 0.3s;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            margin-top: 40px;
+            text-align: center;
         }
 
-        .letter:hover { border-color: var(--gold); }
-        .letter p { font-size: 1rem; color: #ccc; font-style: italic; }
-        .author { margin-top: 20px; color: var(--gold); font-weight: bold; font-style: normal !important; text-transform: uppercase; letter-spacing: 1px; }
-
-        video { width: 100%; border: 1px solid #333; margin-top: 20px; }
-
-        @media (max-width: 768px) {
-            .img-grid { grid-template-columns: 1fr; }
-            .img-grid img { height: 350px; }
-            #header { height: 30vh; }
+        .quiz-container.unlocked {
+            border-color: var(--success);
+            opacity: 0.6;
+            pointer-events: none;
         }
+
+        /* Highlight Styling */
+        .locked-content { display: none; margin: 60px 0; animation: fadeIn 1s ease forwards; }
+        .img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .img-grid img { width: 100%; height: 400px; object-fit: cover; border-radius: 8px; border: 1px solid #222; }
+
+        /* Button Styling */
+        .opt-btn {
+            display: block; width: 100%; padding: 15px; margin: 10px 0;
+            background: #222; color: white; border: 1px solid #444;
+            cursor: pointer; transition: 0.3s; font-size: 1rem;
+        }
+        .opt-btn:hover { border-color: var(--gold); background: #2a2a2a; }
+        .correct-ans { background: #1c6332 !important; border-color: #2ecc71 !important; }
+        .wrong-ans { background: #631c1c !important; }
+
+        /* Word Search Styling */
+        .movie-tag { padding: 8px 15px; background: #222; border-radius: 5px; cursor: pointer; color: #777; font-size: 0.9rem; }
+        .movie-tag.found { background: var(--gold); color: black; text-decoration: line-through; }
+
+        /* Letters & Video */
+        .letters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .letter { background: #161616; padding: 30px; border-top: 3px solid var(--gold); border-radius: 4px; }
+        .author { color: var(--gold); font-weight: bold; margin-top: 15px; text-transform: uppercase; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .img-grid { grid-template-columns: 1fr; } .img-grid img { height: 300px; } }
     </style>
 </head>
 <body>
 
-    <div id="header">
-        <h2 style="font-weight: 200; letter-spacing: 8px; color: #888; margin-bottom: 10px;">DECEMBER 30, 2025</h2>
-        <h1 style="font-size: 3rem; font-weight: 300; color: var(--gold); margin: 0;">HAPPY BIRTHDAY, DAD</h1>
+    <div class="intro-message">
+        <p style="letter-spacing: 5px; color: #888;">DECEMBER 30, 2025</p>
+        <h1 style="font-size: 3rem; color: var(--gold); margin: 10px 0;">Happy Birthday, Dad!</h1>
+        <p style="max-width: 600px; margin: 20px auto; color: #aaa; font-style: italic;">
+            "To see your memories and messages, you must first pass the Quest. Answer the questions to unlock the year 2025."
+        </p>
     </div>
 
     <div id="main-content">
-        
-        <div class="highlight">
+
+        <div class="quiz-container" id="quiz1">
+            <h3 style="color: var(--gold);">Quest 1: The Silver Jubilee</h3>
+            <div id="q1a">
+                <p>What color saree did Amma wear for the anniversary?</p>
+                <button class="opt-btn" onclick="correct('q1a', 'q1b')">Rani Pink</button>
+                <button class="opt-btn" onclick="wrong(this)">Emerald Green</button>
+                <button class="opt-btn" onclick="wrong(this)">Golden Beige</button>
+            </div>
+            <div id="q1b" style="display:none;">
+                <p>What were the return gifts given to the guests?</p>
+                <button class="opt-btn" onclick="correct('q1b', 'q1c')">Silver Coins</button>
+                <button class="opt-btn" onclick="wrong(this)">Sweets Boxes</button>
+                <button class="opt-btn" onclick="wrong(this)">Customized Mugs</button>
+            </div>
+            <div id="q1c" style="display:none;">
+                <p>Which song did Janu and I dance to?</p>
+                <button class="opt-btn" onclick="wrong(this)">Bole Chudiyan</button>
+                <button class="opt-btn" onclick="correct('q1c', 'q1d')">Maahi Ve</button>
+                <button class="opt-btn" onclick="wrong(this)">London Thumakda</button>
+            </div>
+            <div id="q1d" style="display:none;">
+                <p>Which game did everyone play?</p>
+                <button class="opt-btn" onclick="correct('q1d', 'unlock1')">Finish the Dialogue</button>
+                <button class="opt-btn" onclick="wrong(this)">Antakshari</button>
+                <button class="opt-btn" onclick="wrong(this)">Dumb Charades</button>
+            </div>
+        </div>
+        <div class="locked-content" id="content1">
+            <h2 style="text-align:center;">💍 Your 25th Anniversary</h2>
             <div class="img-grid">
-                <img src="anniversary1.jpg" alt="Anniversary Photo 1">
-                <img src="anniversary2.jpg" alt="Anniversary Photo 2">
+                <img src="anniversary1.jpg">
+                <img src="anniversary2.jpg">
             </div>
-            <div class="highlight-text">
-                <h3>Your 25th Anniversary</h3>
-                <p>A quarter-century of grace, love, and partnership. Celebrating the beautiful life you and Amma have built together.</p>
-            </div>
+            <p style="text-align:center;">A night of Rani Pink and Maahi Ve! Happy Anniversary to the best parents.</p>
+            <button class="opt-btn" style="width:200px; margin: 20px auto;" onclick="scrollToId('quiz2')">Next Quest ↓</button>
         </div>
 
-        <div class="highlight">
+        <div class="quiz-container" id="quiz2">
+            <h3>Quest 2: Family Vacation</h3>
+            <p>In which city did we explore historical ruins earlier this year?</p>
+            <input type="text" id="ans2" style="padding:10px; text-align:center; width:80%;" placeholder="Enter city name...">
+            <button class="opt-btn" onclick="checkText(2, 'hampi', 'content2')">Unlock</button>
+        </div>
+        <div class="locked-content" id="content2">
+            <h2 style="text-align:center;">🏛️ The Hampi Trip</h2>
             <div class="img-grid">
-                <img src="hampi1.jpg" alt="Hampi Photo 1">
-                <img src="hampi2.jpg" alt="Hampi Photo 2">
+                <img src="hampi1.jpg">
+                <img src="hampi2.jpg">
             </div>
-            <div class="highlight-text">
-                <h3>The Hampi Trip</h3>
-                <p>Walking through history and making our own. A family memory etched in stone from earlier this year.</p>
-            </div>
+            <button class="opt-btn" style="width:200px; margin: 20px auto;" onclick="scrollToId('quiz3')">Next Quest ↓</button>
         </div>
 
-        <div class="highlight">
+        <div class="quiz-container" id="quiz3">
+            <h3>Quest 3: Priyanka's Journey</h3>
+            <p>I joined VGSoM this year! At which IIT is it located?</p>
+            <input type="text" id="ans3" style="padding:10px; text-align:center; width:80%;" placeholder="IIT Name...">
+            <button class="opt-btn" onclick="checkText(3, 'kharagpur', 'content3')">Unlock</button>
+        </div>
+        <div class="locked-content" id="content3">
+            <h2 style="text-align:center;">🎓 Joining VGSoM, IIT Kharagpur</h2>
             <div class="img-grid">
-                <img src="vgsom1.jpg" alt="VGSOM Photo 1">
-                <img src="vgsom2.jpg" alt="VGSOM Photo 2">
+                <img src="vgsom1.jpg">
+                <img src="vgsom2.jpg">
             </div>
-            <div class="highlight-text">
-                <h3>Joining VGSoM, IIT Kharagpur</h3>
-                <p>Taking this next step in my career with your blessing. Thank you for making my journey at VGSoM possible.</p>
-            </div>
+            <button class="opt-btn" style="width:200px; margin: 20px auto;" onclick="scrollToId('quiz4')">Next Quest ↓</button>
         </div>
 
-        <div class="highlight">
+        <div class="quiz-container" id="quiz4">
+            <h3>Quest 4: Family Milestones</h3>
+            <p>Amma turned 50! And Madhav reached the halfway mark of which degree?</p>
+            <input type="text" id="ans4" style="padding:10px; text-align:center; width:80%;" placeholder="Degree (Abbreviation)...">
+            <button class="opt-btn" onclick="checkText(4, 'mbbs', 'content4')">Unlock Highlights</button>
+        </div>
+        <div class="locked-content" id="content4">
+            <h2 style="text-align:center;">✨ Amma's 50th & Madhav's Milestone</h2>
             <div class="img-grid">
-                <img src="amma1.jpg" alt="Amma Photo 1">
-                <img src="amma2.jpg" alt="Amma Photo 2">
+                <img src="amma1.jpg">
+                <img src="amma2.jpg">
+                <img src="madhav1.jpg">
+                <img src="madhav2.jpg">
             </div>
-            <div class="highlight-text">
-                <h3>Amma's 50th Birthday</h3>
-                <p>Celebrating the heart of our home as she reached her golden year. One of our most joyful moments this year.</p>
+            <button class="opt-btn" style="width:200px; margin: 20px auto;" onclick="scrollToId('quiz-final')">The Final Challenge ↓</button>
+        </div>
+
+        <div class="quiz-container" id="quiz-final">
+            <h2 style="color: var(--gold);">🎬 Final Quest: Telugu Movie Challenge</h2>
+            <p>Click all 10 movies released this year to unlock the final letters and video!</p>
+            <div id="word-list" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px;">
+                <span class="movie-tag" onclick="found(this)">GAMECHANGER</span>
+                <span class="movie-tag" onclick="found(this)">DAAKU</span>
+                <span class="movie-tag" onclick="found(this)">THANDEL</span>
+                <span class="movie-tag" onclick="found(this)">HARAHARA</span>
+                <span class="movie-tag" onclick="found(this)">SWAYAMBHU</span>
+                <span class="movie-tag" onclick="found(this)">KUBERA</span>
+                <span class="movie-tag" onclick="found(this)">DRAGON</span>
+                <span class="movie-tag" onclick="found(this)">MIRAI</span>
+                <span class="movie-tag" onclick="found(this)">SANKRANT</span>
+                <span class="movie-tag" onclick="found(this)">VEERAMALLU</span>
             </div>
         </div>
 
-        <div class="highlight">
-            <div class="img-grid">
-                <img src="madhav1.jpg" alt="Madhav Photo 1">
-                <img src="madhav2.jpg" alt="Madhav Photo 2">
-            </div>
-            <div class="highlight-text">
-                <h3>Madhav’s MBBS Milestone</h3>
-                <p>Halfway through the journey to becoming a doctor. We are so incredibly proud of Madhav's dedication and hard work.</p>
+        <div id="reward-section" class="locked-content">
+            <h1 style="text-align:center; color: var(--gold); margin-bottom: 50px;">LETTERS FROM THE FAMILY</h1>
+            <div class="letters-grid">
+                <div class="letter">
+                    <p>"To the man who taught me resilience. Thank you for making my MBA journey at VGSoM possible. I love you, Dad!"</p>
+                    <div class="author">— Priyanka</div>
+                </div>
+                <div class="letter">
+                    <p>"Happy Birthday Dad! Thank you for the inspiration. Hope to make you proud as I finish my MBBS."</p>
+                    <div class="author">— Madhav</div>
+                </div>
+                </div>
+
+            <div style="margin-top: 100px; text-align: center;">
+                <h2 style="color: var(--gold); letter-spacing: 5px;">THE GRAND FINALE</h2>
+                <video controls style="width:100%; max-width: 800px; border: 2px solid var(--gold); margin-top: 20px;">
+                    <source src="birthday_wish.mp4" type="video/mp4">
+                </video>
             </div>
         </div>
-
-        <div class="highlight">
-            <h3 class="section-title">A SPECIAL MESSAGE</h3>
-            <video controls>
-                <source src="birthday_wish.mp4" type="video/mp4">
-            </video>
-        </div>
-
-        <h2 class="section-title" style="margin-top: 100px;">LETTERS FROM THE FAMILY</h2>
-        <div class="letters-container">
-            <div class="letter">
-                <p>"To the man who taught me resilience and kindness. Watching you manage everything with a smile gives me the strength to tackle my MBA challenges at VGSoM. Happy Birthday, Dad!"</p>
-                <div class="author">— Priyanka</div>
-            </div>
-            <div class="letter">
-                <p>"Happy Birthday, Dad! Thank you for always being my guide. I hope to be as dedicated to my patients as you are to us."</p>
-                <div class="author">— Madhav</div>
-            </div>
-            </div>
     </div>
 
+    <script>
+        let moviesFound = 0;
+
+        function wrong(btn) {
+            btn.classList.add('wrong-ans');
+            setTimeout(() => btn.classList.remove('wrong-ans'), 500);
+        }
+
+        function correct(curr, next) {
+            const btn = event.target;
+            btn.classList.add('correct-ans');
+            setTimeout(() => {
+                if(next === 'unlock1') {
+                    document.getElementById('quiz1').classList.add('unlocked');
+                    document.getElementById('content1').style.display = 'block';
+                    document.getElementById('content1').scrollIntoView({behavior:'smooth'});
+                } else {
+                    document.getElementById(curr).style.display = 'none';
+                    document.getElementById(next).style.display = 'block';
+                }
+            }, 600);
+        }
+
+        function checkText(num, ans, contentId) {
+            const val = document.getElementById('ans' + num).value.toLowerCase();
+            if(val.includes(ans)) {
+                document.getElementById('quiz' + num).classList.add('unlocked');
+                document.getElementById(contentId).style.display = 'block';
+                document.getElementById(contentId).scrollIntoView({behavior:'smooth'});
+            } else {
+                alert("Incorrect! Keep guessing, Dad! 😊");
+            }
+        }
+
+        function found(tag) {
+            if(!tag.classList.contains('found')) {
+                tag.classList.add('found');
+                moviesFound++;
+                if(moviesFound === 10) {
+                    document.getElementById('quiz-final').classList.add('unlocked');
+                    document.getElementById('reward-section').style.display = 'block';
+                    document.getElementById('reward-section').scrollIntoView({behavior:'smooth'});
+                }
+            }
+        }
+
+        function scrollToId(id) {
+            document.getElementById(id).scrollIntoView({behavior:'smooth'});
+        }
+    </script>
 </body>
 </html>
