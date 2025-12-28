@@ -6,138 +6,254 @@
     <title>Happy Birthday Dad!</title>
     <style>
         :root {
-            --gold: #f39c12;
-            --dark: #0f0f1a;
+            --gold: #FFD700;
+            --dark-bg: #0a0a0a;
+            --card-bg: #161616;
         }
 
         body {
-            background: var(--dark);
+            background-color: var(--dark-bg);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Georgia', serif;
             margin: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Countdown Screen --- */
+        #countdown-screen {
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             text-align: center;
-            transition: background 1.5s ease;
+            background: radial-gradient(circle, #1a1a2e 0%, #000 100%);
         }
 
-        /* Countdown Styles */
-        #countdown-container h1 {
-            letter-spacing: 5px;
-            color: var(--gold);
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            padding: 50px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 50px rgba(0,0,0,1);
         }
 
         #timer {
-            font-size: clamp(2rem, 8vw, 4rem);
-            font-weight: 800;
             display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .unit { font-size: 0.9rem; color: #888; text-transform: uppercase; display: block; }
-
-        /* Surprise Section (Hidden by default) */
-        #surprise {
-            display: none;
-            width: 90%;
-            max-width: 800px;
-            padding: 40px 0;
-        }
-
-        .memory-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        img, video {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .message {
-            font-style: italic;
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-
-        .bday-title {
-            font-size: 3rem;
+            gap: 25px;
+            font-size: clamp(2rem, 10vw, 4rem);
+            font-weight: bold;
             color: var(--gold);
-            animation: glow 2s infinite alternate;
         }
 
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #f39c12; }
-            to { text-shadow: 0 0 30px #f1c40f, 0 0 40px #ff4757; }
+        .time-unit { display: flex; flex-direction: column; }
+        .label { font-size: 0.8rem; text-transform: uppercase; color: #888; letter-spacing: 2px; margin-top: 5px; }
+
+        /* --- Main Content Section --- */
+        #surprise-section {
+            display: none;
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .bday-header {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            text-align: center;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 50px;
+        }
+
+        /* --- Highlights / Memories --- */
+        .highlight-card {
+            background: var(--card-bg);
+            margin-bottom: 60px;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: transform 0.5s ease;
+        }
+
+        .image-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            background: #000;
+        }
+
+        .image-row img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .image-row img:hover { transform: scale(1.05); }
+
+        .content { padding: 30px; }
+        .content h3 { color: var(--gold); margin-top: 0; font-size: 1.8rem; }
+        .content p { line-height: 1.6; color: #ccc; font-size: 1.1rem; }
+
+        /* --- Letters Grid --- */
+        .letters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .letter-card {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .confetti {
+            position: fixed; top: -10px; z-index: 999;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
+
+        @media (max-width: 600px) {
+            .image-row { grid-template-columns: 1fr; }
+            .image-row img { height: 250px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="countdown-container">
-        <h1>COUNTING DOWN TO THE BIG DAY</h1>
-        <div id="timer">
-            <div><span id="days">00</span><span class="unit">Days</span></div>
-            <div><span id="hours">00</span><span class="unit">Hrs</span></div>
-            <div><span id="mins">00</span><span class="unit">Mins</span></div>
-            <div><span id="secs">00</span><span class="unit">Secs</span></div>
+    <div id="countdown-screen">
+        <div class="glass-card">
+            <h2 style="letter-spacing: 5px; color: #aaa; font-weight: normal; margin-bottom: 30px;">THE CELEBRATION BEGINS IN...</h2>
+            <div id="timer">
+                <div class="time-unit"><span id="days">00</span><span class="label">Days</span></div>
+                <div class="time-unit"><span id="hours">00</span><span class="label">Hours</span></div>
+                <div class="time-unit"><span id="mins">00</span><span class="label">Mins</span></div>
+                <div class="time-unit"><span id="secs">00</span><span class="label">Secs</span></div>
+            </div>
         </div>
     </div>
 
-    <div id="surprise">
-        <h1 class="bday-title">🎉 HAPPY BIRTHDAY, DAD! 🎂</h1>
-        
-        <div class="memory-card">
-            <img src="photo1.jpg" alt="Dad's Photo"> <p class="message">"To the man who taught me everything I know. We love you!"</p>
+    <div id="surprise-section">
+        <h1 class="bday-header">Happy Birthday, Dad!</h1>
+
+        <div class="highlight-card">
+            <div class="image-row">
+                <img src="anniversary1.jpg" alt="Anniversary 1">
+                <img src="anniversary2.jpg" alt="Anniversary 2">
+            </div>
+            <div class="content">
+                <h3>💍 Our 25th Anniversary</h3>
+                <p>A quarter-century of incredible love and partnership. You and Amma are the foundation of our happiness. Watching you both reach this milestone is our favorite memory of 2025.</p>
+            </div>
         </div>
 
-        <div class="memory-card">
-            <video controls>
-                <source src="birthday_wish.mp4" type="video/mp4"> Your browser does not support the video tag.
+        <div class="highlight-card">
+            <div class="image-row">
+                <img src="hampi1.jpg" alt="Hampi 1">
+                <img src="hampi2.jpg" alt="Hampi 2">
+            </div>
+            <div class="content">
+                <h3>🏛️ The Hampi Expedition</h3>
+                <p>Exploring the historic ruins and sharing laughs under the sun. This trip reminded us all of the joy of traveling together as a family.</p>
+            </div>
+        </div>
+
+        <div class="highlight-card">
+            <div class="image-row">
+                <img src="vgsom1.jpg" alt="VGSOM 1">
+                <img src="vgsom2.jpg" alt="VGSOM 2">
+            </div>
+            <div class="content">
+                <h3>🎓 Priyanka Joining VGSOM</h3>
+                <p>Getting into IIT Kharagpur was a dream come true, and I couldn't have done it without your constant support. Thank you for being my biggest cheerleader!</p>
+            </div>
+        </div>
+
+        <div class="highlight-card">
+            <div class="image-row">
+                <img src="amma1.jpg" alt="Amma 1">
+                <img src="amma2.jpg" alt="Amma 2">
+            </div>
+            <div class="content">
+                <h3>✨ Amma's Golden Jubilee</h3>
+                <p>Celebrating Amma's 50th birthday was a highlight we will cherish forever. A beautiful celebration for the woman who holds us all together.</p>
+            </div>
+        </div>
+
+        <div class="highlight-card">
+            <div class="image-row">
+                <img src="madhav1.jpg" alt="Madhav 1">
+                <img src="madhav2.jpg" alt="Madhav 2">
+            </div>
+            <div class="content">
+                <h3>🩺 Dr. Madhav's Progress</h3>
+                <p>Crossing the halfway mark of the MBBS degree! Seeing Madhav's dedication to medicine makes us all incredibly proud of the doctor he is becoming.</p>
+            </div>
+        </div>
+
+        <div class="highlight-card" style="background: #000;">
+            <video controls style="width: 100%; border-radius: 25px;">
+                <source src="birthday_wish.mp4" type="video/mp4">
             </video>
-            <p class="message">A special message from the whole family.</p>
+            <div class="content" style="text-align: center;">
+                <p>"A small video for the world's best father."</p>
+            </div>
         </div>
 
-        <div class="memory-card">
-            <p class="message">"You aren't getting older, you're just becoming a classic! Have the best day ever."</p>
-        </div>
+        <h2 style="color: var(--gold); text-align: center; font-size: 2.5rem; margin-top: 100px;">Letters from the Family</h2>
+        <div class="letters-grid" id="letters-container">
+            <div class="letter-card">
+                <p>"Happy Birthday Dad! You are my hero."</p>
+                <p style="color: var(--gold); font-weight: bold; margin-top: 15px;">— Priyanka</p>
+            </div>
+            <div class="letter-card">
+                <p>"So proud to be your son. Happy Birthday!"</p>
+                <p style="color: var(--gold); font-weight: bold; margin-top: 15px;">— Madhav</p>
+            </div>
+            </div>
     </div>
 
     <script>
-        const targetDate = new Date("2024-12-30T00:00:00+05:30").getTime();
+        // TARGET DATE: Dec 30, 2025 at 00:00:00 IST
+        const targetDate = new Date("2025-12-30T00:00:00+05:30").getTime();
 
-        const x = setInterval(function() {
+        const timerLoop = setInterval(() => {
             const now = new Date().getTime();
-            const distance = targetDate - now;
+            const diff = targetDate - now;
 
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = d;
-            document.getElementById("hours").innerText = h;
-            document.getElementById("mins").innerText = m;
-            document.getElementById("secs").innerText = s;
-
-            // WHEN COUNTDOWN FINISHES
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("countdown-container").style.display = "none";
-                document.getElementById("surprise").style.display = "block";
-                document.body.style.background = "#2c3e50"; // Changes to a festive blue/gray
-                document.body.style.overflow = "auto"; // Allows scrolling to see messages
-                document.body.style.alignItems = "flex-start"; // Align to top for scrolling
+            if (diff <= 0) {
+                clearInterval(timerLoop);
+                document.getElementById("countdown-screen").style.display = "none";
+                document.getElementById("surprise-section").style.display = "block";
+                document.body.style.overflowY = "auto";
+                for(let i=0; i<150; i++) { spawnConfetti(); }
+                return;
             }
+
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("secs").innerText = Math.floor((diff % (1000 * 60)) / 1000);
         }, 1000);
+
+        function spawnConfetti() {
+            const colors = ['#FFD700', '#FFFFFF', '#FF4757'];
+            const el = document.createElement('div');
+            el.className = 'confetti';
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            el.style.width = Math.random() * 8 + 4 + 'px';
+            el.style.height = el.style.width;
+            el.style.animationDuration = Math.random() * 3 + 2 + 's';
+            el.style.opacity = Math.random();
+            document.body.appendChild(el);
+        }
     </script>
 </body>
 </html>
