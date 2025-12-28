@@ -41,7 +41,7 @@
         .opt:hover { background: #333; }
         input { padding: 12px; background: #000; border: 1px solid #444; color: white; text-align: center; width: 85%; border-radius: 5px; font-size: 1rem; }
         
-        .congrats-text { color: var(--success); font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; display: none; }
+        .feedback { color: var(--success); font-weight: bold; margin-top: 10px; display: none; }
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .movie-tag { padding: 8px 12px; background: #333; border-radius: 5px; cursor: pointer; margin: 5px; display: inline-block; }
@@ -51,66 +51,54 @@
 <body>
 
     <div id="stage-opening">
-        <img src="funky_nanna.jpg" class="funky-img" onerror="this.src='https://via.placeholder.com/250?text=Nanna'">
+        <img src="funky_nanna.jpg" class="funky-img">
         <h1 style="color: var(--gold); letter-spacing: 5px; margin: 0;">HAPPY BIRTHDAY NANNA!</h1>
-        <p style="color: #888; margin-bottom: 30px;">2025: The Year of Amazing Memories</p>
-        <button class="btn" onclick="goToDashboard()">See Highlights</button>
+        <p style="color: #888; margin-bottom: 30px;">Every highlight of 2025 is a memory we built together.</p>
+        <button class="btn" onclick="goToDashboard()">See 2025 Highlights</button>
     </div>
 
     <div id="stage-dashboard">
-        <h2 style="text-align:center; color: var(--gold); margin-bottom: 40px; font-weight: 300; letter-spacing: 3px;">2025 MILESTONES</h2>
+        <h2 style="text-align:center; color: var(--gold); margin-bottom: 40px; font-weight: 300; letter-spacing: 3px;">2025 HIGHLIGHTS</h2>
         <div class="grid">
-            <div class="tile locked" id="tile1" onclick="openGame(1)"><h3>25th Anniversary</h3><div id="rev1" class="milestone-reveal"></div></div>
-            <div class="tile locked" id="tile2" onclick="openGame(2)"><h3>Priyanka & VGSoM</h3><div id="rev2" class="milestone-reveal"></div></div>
-            <div class="tile locked" id="tile3" onclick="openGame(3)"><h3>Madhav's MBBS</h3><div id="rev3" class="milestone-reveal"></div></div>
-            <div class="tile locked" id="tile4" onclick="openGame(4)"><h3>The Hampi Trip</h3><div id="rev4" class="milestone-reveal"></div></div>
-            <div class="tile locked" id="tile5" onclick="openGame(5)"><h3>Amma's 50th</h3><div id="rev5" class="milestone-reveal"></div></div>
+            <div class="tile locked" id="tile1" onclick="openGame(1)"><h3>25th Anniversary</h3><div id="rev1" class="milestone-reveal"><div class="img-row"><img src="anniversary1.jpg"><img src="anniversary2.jpg"></div></div></div>
+            <div class="tile locked" id="tile2" onclick="openGame(2)"><h3>Priyanka & VGSoM</h3><div id="rev2" class="milestone-reveal"><div class="img-row"><img src="vgsom1.jpg"><img src="vgsom2.jpg"></div></div></div>
+            <div class="tile locked" id="tile3" onclick="openGame(3)"><h3>Madhav's MBBS</h3><div id="rev3" class="milestone-reveal"><div class="img-row"><img src="madhav1.jpg"><img src="madhav2.jpg"></div></div></div>
+            <div class="tile locked" id="tile4" onclick="openGame(4)"><h3>The Hampi Trip</h3><div id="rev4" class="milestone-reveal"><div class="img-row"><img src="hampi1.jpg"><img src="hampi2.jpg"></div></div></div>
+            <div class="tile locked" id="tile5" onclick="openGame(5)"><h3>Amma's 50th</h3><div id="rev5" class="milestone-reveal"><div class="img-row"><img src="amma1.jpg"><img src="amma2.jpg"></div></div></div>
         </div>
 
-        <div id="final-trigger" style="display:none; text-align:center; margin-top: 60px;">
+        <div id="final-trigger" style="display:none; text-align:center; margin-top: 60px; padding: 40px; border-top: 1px solid #222;">
             <button class="btn" style="background:#27ae60; padding: 20px 40px;" onclick="openGame(6)">Unlock Birthday Messages ❤️</button>
         </div>
     </div>
 
     <div id="stage-finale" style="display:none; padding: 40px 20px; max-width: 900px; margin: 0 auto; text-align:center;">
         <h2 style="color: var(--gold); margin-bottom: 40px;">Messages from the Family</h2>
-        <div id="letters-container" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 50px;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 50px;">
+            <div style="background:#111; padding:25px; border-radius:10px; border-top: 3px solid var(--gold); text-align:left;">"Happy Birthday Nanna! My journey at VGSoM is because of you. - Priyanka"</div>
             </div>
-        <video id="final-video" controls style="width:100%; max-width:700px; border: 2px solid var(--gold); border-radius: 10px;">
+        <video controls style="width:100%; max-width:700px; border: 2px solid var(--gold); border-radius: 10px;">
             <source src="birthday_wish.mp4" type="video/mp4">
         </video>
     </div>
 
     <div id="game-overlay">
-        <div class="game-window">
-            <div id="congrats" class="congrats-text">GREAT WORK, NANNA!</div>
-            <div id="game-content"></div>
-        </div>
+        <div class="game-window" id="game-content"></div>
     </div>
 
     <script>
         let unlockedCount = 0;
         let subStep = 1;
-        const extensions = ['.jpg', '.jpeg', '.JPG', '.JPEG'];
 
         function goToDashboard() {
             document.getElementById('stage-opening').style.display = 'none';
             document.getElementById('stage-dashboard').style.display = 'block';
         }
 
-        // Helper to load images safely
-        function getImgHTML(baseName) {
-            return `<div class="img-row">
-                <img src="${baseName}1.jpg" onerror="this.src='${baseName}1.jpeg'">
-                <img src="${baseName}2.jpg" onerror="this.src='${baseName}2.jpeg'">
-            </div>`;
-        }
-
         function openGame(n) {
             if(document.getElementById('tile'+n)?.classList.contains('unlocked')) return;
             const content = document.getElementById('game-content');
             document.getElementById('game-overlay').style.display = 'flex';
-            document.getElementById('congrats').style.display = 'none';
             subStep = 1;
 
             if(n === 1) anniversaryGame();
@@ -123,62 +111,62 @@
 
         function anniversaryGame() {
             const content = document.getElementById('game-content');
-            const questions = [
-                {q: "What color saree did Amma wear?", a: "Rani Pink", o: ["Blue", "Yellow", "Green"]},
-                {q: "What were the return gifts?", a: "Silver Coins", o: ["Sweets", "Mugs", "Frames"]},
-                {q: "Song Janu & I danced to?", a: "Maahi Ve", o: ["Bole Chudiyan", "Tum Hi Ho", "Dilbar"]},
-                {q: "The party game we played?", a: "Finish the Dialogue", o: ["Charades", "Antakshari", "Cards"]}
-            ];
-            
-            let current = questions[subStep-1];
-            let opts = [...current.o, current.a].sort(() => Math.random() - 0.5);
-            
-            content.innerHTML = `<h3>Quest ${subStep}/4</h3><p>${current.q}</p>` + 
-                opts.map(opt => `<button class="opt" onclick="${opt === current.a ? (subStep === 4 ? 'win(1)' : 'nextSub()') : 'fail()'}">${opt}</button>`).join('');
-        }
-
-        function nextSub() { subStep++; anniversaryGame(); }
-        function fail() { alert("Not quite, Nanna! Try again. 😊"); }
-
-        function check(n, correct) {
-            if(document.getElementById('ans'+n).value.toLowerCase().includes(correct)) win(n); 
-            else fail();
-        }
-
-        function win(n) {
-            document.getElementById('game-content').innerHTML = "";
-            document.getElementById('congrats').style.display = 'block';
-            
-            setTimeout(() => {
-                document.getElementById('game-overlay').style.display = 'none';
-                if(n === 6) {
-                    document.getElementById('stage-dashboard').style.display = 'none';
-                    document.getElementById('stage-finale').style.display = 'block';
-                    return;
-                }
-                const tile = document.getElementById('tile'+n);
-                tile.classList.remove('locked'); tile.classList.add('unlocked');
-                
-                const names = ["anniversary", "vgsom", "madhav", "hampi", "amma"];
-                document.getElementById('rev'+n).innerHTML = getImgHTML(names[n-1]);
-                document.getElementById('rev'+n).style.display = 'block';
-                
-                unlockedCount++;
-                if(unlockedCount === 5) document.getElementById('final-trigger').style.display = 'block';
-            }, 1500);
+            if(subStep === 1) {
+                content.innerHTML = `<h3>Quest 1/4</h3><p>What color saree did Amma wear?</p>
+                <button class="opt" onclick="nextSub(1)">Rani Pink</button><button class="opt" onclick="fail()">Blue</button>
+                <button class="opt" onclick="fail()">Yellow</button><button class="opt" onclick="fail()">Green</button>`;
+            } else if(subStep === 2) {
+                content.innerHTML = `<h3>Quest 2/4</h3><p>What were the return gifts?</p>
+                <button class="opt" onclick="nextSub(1)">Silver Coins</button><button class="opt" onclick="fail()">Sweets</button>
+                <button class="opt" onclick="fail()">Mugs</button><button class="opt" onclick="fail()">Frames</button>`;
+            } else if(subStep === 3) {
+                content.innerHTML = `<h3>Quest 3/4</h3><p>Song Janu & I danced to?</p>
+                <button class="opt" onclick="fail()">Bole Chudiyan</button><button class="opt" onclick="nextSub(1)">Maahi Ve</button>
+                <button class="opt" onclick="fail()">Tum Hi Ho</button><button class="opt" onclick="fail()">Dilbar</button>`;
+            } else if(subStep === 4) {
+                content.innerHTML = `<h3>Quest 4/4</h3><p>The party game we played?</p>
+                <button class="opt" onclick="fail()">Charades</button><button class="opt" onclick="win(1)">Finish the Dialogue</button>
+                <button class="opt" onclick="fail()">Antakshari</button><button class="opt" onclick="fail()">Cards</button>`;
+            }
         }
 
         function filmHunt() {
             const content = document.getElementById('game-content');
             content.innerHTML = `<h3>Final Movie Hunt</h3><p>Find 10 Telugu Blockbusters of 2025</p>
             <div id="movie-tags">
-                ${["GAMECHANGER", "DAAKU", "THANDEL", "MIRAI", "KUBERA", "SANKRANT", "DRAGON", "VEERAMALLU", "HARAHARA", "SWAYAMBHU"]
-                .map(m => `<span class="movie-tag" onclick="this.classList.add('found'); checkMovies()">${m}</span>`).join('')}
+                <span class="movie-tag" onclick="found(this)">GAMECHANGER</span><span class="movie-tag" onclick="found(this)">DAAKU</span>
+                <span class="movie-tag" onclick="found(this)">THANDEL</span><span class="movie-tag" onclick="found(this)">MIRAI</span>
+                <span class="movie-tag" onclick="found(this)">KUBERA</span><span class="movie-tag" onclick="found(this)">SANKRANT</span>
+                <span class="movie-tag" onclick="found(this)">DRAGON</span><span class="movie-tag" onclick="found(this)">VEERAMALLU</span>
+                <span class="movie-tag" onclick="found(this)">HARAHARA</span><span class="movie-tag" onclick="found(this)">SWAYAMBHU</span>
             </div>`;
         }
 
-        function checkMovies() {
-            if(document.querySelectorAll('.found').length === 10) win(6);
+        let mCount = 0;
+        function found(tag) {
+            if(!tag.classList.contains('found')) { tag.classList.add('found'); mCount++; if(mCount === 10) win(6); }
+        }
+
+        function nextSub() { subStep++; anniversaryGame(); }
+        function fail() { alert("Not quite, Nanna! Try again. 😊"); }
+        function check(n, correct) {
+            const val = document.getElementById('ans'+n).value.toLowerCase();
+            if(val.includes(correct)) win(n); else fail();
+        }
+
+        function win(n) {
+            alert("Great work, Nanna! Milestone Unlocked.");
+            document.getElementById('game-overlay').style.display = 'none';
+            if(n === 6) {
+                document.getElementById('stage-dashboard').style.display = 'none';
+                document.getElementById('stage-finale').style.display = 'block';
+                return;
+            }
+            const tile = document.getElementById('tile'+n);
+            tile.classList.remove('locked'); tile.classList.add('unlocked');
+            document.getElementById('rev'+n).style.display = 'block';
+            unlockedCount++;
+            if(unlockedCount === 5) document.getElementById('final-trigger').style.display = 'block';
         }
     </script>
 </body>
