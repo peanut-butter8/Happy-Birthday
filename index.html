@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nanna's Birthday Quest: Hard Mode</title>
+    <title>Nanna's Birthday Quest: Ultimate Edition</title>
     <link rel="preload" as="image" href="funky_nanna.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Bangers&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     
@@ -12,13 +12,13 @@
             --gold: #FFD700;
             --success: #2ecc71;
             --error: #e74c3c;
-            --bg-gradient: linear-gradient(-45deg, #141E30, #243B55, #1a2a6c);
+            --bg-gradient: linear-gradient(-45deg, #FF0099, #493240, #1a2a6c, #fdbb2d);
         }
 
         body {
             background: var(--bg-gradient);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 12s ease infinite; /* Faster animation for more vibe */
             color: white;
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -35,115 +35,129 @@
         }
 
         .funky-img {
-            width: 220px; height: 220px; border-radius: 50%; 
-            border: 6px solid white; margin-bottom: 25px; 
-            object-fit: cover; box-shadow: 0 0 50px var(--gold);
+            width: 240px; height: 240px; border-radius: 50%; 
+            border: 8px solid white; margin-bottom: 25px; 
+            object-fit: cover; box-shadow: 0 0 60px var(--gold);
             animation: bounce 2s infinite;
         }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        h1 { font-family: 'Bangers', cursive; font-size: 3.5rem; color: var(--gold); letter-spacing: 2px; text-shadow: 4px 4px 0 #000; margin: 0; }
+        h1 { font-family: 'Bangers', cursive; font-size: 4rem; color: var(--gold); letter-spacing: 2px; text-shadow: 4px 4px 0 #000; margin: 0; }
 
         /* GAME LEVELS */
         .quest-level { display: none; min-height: 100vh; padding: 20px; flex-direction: column; justify-content: center; align-items: center; }
         
         .game-card {
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
-            padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(12px);
+            padding: 35px; border-radius: 25px; border: 2px solid rgba(255,215,0,0.3);
             max-width: 700px; width: 95%; text-align: center; position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
         }
 
-        h3 { color: var(--gold); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #555; padding-bottom: 10px; margin-bottom: 20px; }
+        h3 { color: var(--gold); text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 25px; font-size: 1.5rem; }
 
         /* --- GAME 1: MEMORY MATCH (Anniversary) --- */
-        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px auto; max-width: 400px; }
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 30px auto; max-width: 450px; }
         .memory-card {
-            background: #fff; height: 70px; border-radius: 8px; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; font-size: 2rem;
-            transform: scale(1); transition: 0.3s;
+            background: #fff; height: 80px; border-radius: 12px; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; font-size: 2.5rem;
+            transform: scale(1); transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .memory-card.hidden { background: #333; color: #333; }
-        .memory-card.matched { background: var(--success); pointer-events: none; }
+        .memory-card.hidden { background: #444; color: #444; border: 2px solid #666; }
+        .memory-card.matched { background: var(--success); pointer-events: none; animation: pulse 0.5s; }
 
         /* --- GAME 2: SCRAMBLE (VGSoM) --- */
-        .scramble-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 20px 0; }
+        .scramble-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 30px 0; }
         .letter-tile {
-            background: #eee; color: #000; padding: 12px 18px; font-weight: 800; font-size: 1.2rem;
-            border-radius: 6px; cursor: pointer; border-bottom: 4px solid #999;
+            background: #eee; color: #000; padding: 15px 22px; font-weight: 900; font-size: 1.4rem;
+            border-radius: 8px; cursor: pointer; border-bottom: 5px solid #999; transition: 0.1s;
         }
-        .letter-tile:active { transform: translateY(4px); border-bottom: 0; }
+        .letter-tile:active { transform: translateY(5px); border-bottom: 0; }
         .answer-box { 
-            min-height: 50px; border-bottom: 2px solid var(--gold); margin: 20px; 
-            font-family: 'Bangers', cursive; font-size: 2rem; letter-spacing: 5px; color: var(--gold);
+            min-height: 60px; border-bottom: 3px solid var(--gold); margin: 30px; 
+            font-family: 'Bangers', cursive; font-size: 2.5rem; letter-spacing: 6px; color: var(--gold);
         }
 
         /* --- GAME 3: FAST PULSE (MBBS) --- */
         .pulse-track {
-            width: 100%; height: 30px; background: #333; border-radius: 15px; 
-            position: relative; overflow: hidden; margin: 30px 0; border: 2px solid #555;
+            width: 100%; height: 40px; background: #333; border-radius: 20px; 
+            position: relative; overflow: hidden; margin: 40px 0; border: 3px solid #666;
         }
         .pulse-zone {
-            position: absolute; left: 45%; width: 10%; /* Smaller zone */
-            height: 100%; background: var(--success); opacity: 0.6;
+            position: absolute; left: 45%; width: 10%; height: 100%; background: var(--success); opacity: 0.7;
         }
         .pulse-bar {
-            position: absolute; left: 0; width: 5px; height: 100%; background: white;
-            box-shadow: 0 0 10px white;
-            animation: movePulse 0.8s linear infinite alternate; /* Faster speed */
+            position: absolute; left: 0; width: 8px; height: 100%; background: white;
+            box-shadow: 0 0 15px white;
+            animation: movePulse 0.7s linear infinite alternate; /* Very Fast */
         }
         @keyframes movePulse { from { left: 0%; } to { left: 98%; } }
 
-        /* --- GAME 4: MOVING KEYS (Hampi) --- */
-        .hidden-key {
-            font-size: 1.5rem; position: absolute; cursor: pointer; opacity: 0.6;
-            animation: floatKey 2s ease-in-out infinite alternate;
+        /* --- NEW GAME 4: BROKEN TABLET (Hampi) --- */
+        .tablet-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 5px; 
+            max-width: 300px; margin: 30px auto; padding: 10px;
+            background: #5c4a3d; border: 4px solid #3e2f26; border-radius: 10px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
-        @keyframes floatKey { from { transform: translate(0,0); } to { transform: translate(20px, 20px); } }
+        .tablet-piece {
+            width: 100%; aspect-ratio: 1; background-color: #c2b280;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 3rem; cursor: pointer; border-radius: 5px;
+            border: 2px solid #8b7355;
+            transition: transform 0.3s ease;
+            /* Add a stone texture look */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='6.29' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
+        }
+        .tablet-piece.correct { border-color: var(--success); background-color: #d4e157; }
 
         /* --- GAME 5: BLIND SLIDER (Amma) --- */
-        input[type=range] { width: 100%; margin: 30px 0; accent-color: var(--gold); cursor: pointer; }
-        .slider-val { font-size: 3rem; font-weight: bold; color: var(--gold); min-height: 60px; }
+        input[type=range] { width: 100%; margin: 40px 0; accent-color: var(--gold); cursor: pointer; height: 20px; }
+        .slider-val { font-size: 3.5rem; font-weight: bold; color: var(--gold); min-height: 70px; }
 
         /* --- GAME 6: 30 MOVIE CHALLENGE --- */
-        #movie-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 20px; }
+        #movie-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 30px; }
         .movie-btn {
-            padding: 8px 12px; background: rgba(255,255,255,0.1); border: 1px solid #555;
-            color: #ddd; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: 0.2s;
+            padding: 10px 16px; background: rgba(255,255,255,0.15); border: 2px solid #666;
+            color: #eee; border-radius: 8px; cursor: pointer; font-size: 0.95rem; transition: 0.2s; font-weight: bold;
         }
-        .movie-btn:hover { background: rgba(255,255,255,0.2); }
+        .movie-btn:hover { background: rgba(255,255,255,0.3); border-color: var(--gold); }
 
         /* REVEAL & MESSAGES */
         .reveal-section { display: none; animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        .img-row { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .img-row { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
         .img-row img { 
-            width: 45%; height: 180px; object-fit: cover; border-radius: 10px; 
-            border: 3px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            width: 45%; height: 220px; 
+            /* KEY CHANGE FOR FACES: Focus on top center */
+            object-fit: cover; object-position: top center;
+            border-radius: 15px; 
+            border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .msg-card {
-            background: linear-gradient(to right, rgba(255,215,0,0.1), transparent);
-            padding: 15px; border-radius: 8px; border-left: 4px solid var(--gold);
-            text-align: left; margin-top: 20px;
+            background: linear-gradient(to right, rgba(255,215,0,0.15), transparent);
+            padding: 20px; border-radius: 12px; border-left: 5px solid var(--gold);
+            text-align: left; margin-top: 30px;
         }
-        .msg-author { color: var(--gold); font-size: 0.75rem; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        .msg-text { font-style: italic; font-size: 0.95rem; line-height: 1.5; color: #eee; }
+        .msg-author { color: var(--gold); font-size: 0.85rem; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+        .msg-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; line-height: 1.6; color: #f0f0f0; }
 
         .btn {
-            background: var(--gold); color: black; border: none; padding: 15px 40px; 
-            font-weight: 800; cursor: pointer; border-radius: 50px; margin-top: 25px; 
-            text-transform: uppercase; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            transition: transform 0.2s;
+            background: var(--gold); color: black; border: none; padding: 18px 45px; 
+            font-weight: 900; cursor: pointer; border-radius: 60px; margin-top: 30px; 
+            text-transform: uppercase; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            transition: all 0.2s; font-size: 1.1rem; letter-spacing: 1px;
         }
-        .btn:hover { transform: scale(1.05); }
+        .btn:hover { transform: scale(1.05) translateY(-3px); background: #ffe033; }
 
         /* Confetti */
-        .confetti { position: fixed; top: -10px; z-index: 999; animation: fall linear forwards; pointer-events: none; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        .confetti { position: fixed; top: -20px; z-index: 999; animation: fall linear forwards; pointer-events: none; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
 
-        video { width: 100%; border-radius: 15px; margin-top: 20px; border: 4px solid var(--gold); }
+        video { width: 100%; border-radius: 20px; margin-top: 30px; border: 5px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
@@ -151,15 +165,15 @@
     <div id="stage-opening">
         <img src="funky_nanna.jpg" class="funky-img" onerror="this.onerror=null; this.src='funky_nanna.jpeg'">
         <h1>HAPPY BIRTHDAY NANNA!</h1>
-        <p style="margin-top: 15px; font-size: 1.2rem; color: #aaa;">The 2025 Hard Mode Quest</p>
-        <button class="btn" onclick="startQuest()">Start Game</button>
+        <p style="margin-top: 20px; font-size: 1.4rem; color: #ddd;">Welcome to your 2025 Birthday Quest.</p>
+        <button class="btn" onclick="startQuest()">Let's Play!</button>
     </div>
 
     <div id="level1" class="quest-level">
         <div class="game-card">
             <div id="game1">
                 <h3>LEVEL 1: MEMORY MATCH</h3>
-                <p>Find the matching pairs to unlock the Anniversary Photos!</p>
+                <p>Flip the cards to find matching pairs!</p>
                 <div class="memory-grid" id="memory-board"></div>
             </div>
 
@@ -170,8 +184,8 @@
                     <img src="anniversary2.jpeg" onerror="this.src='anniversary2.jpg'">
                 </div>
                 <div class="msg-card">
-                    <span class="msg-author">From Amma & Kids</span>
-                    <span class="msg-text">"25 years of love, patience, and building this beautiful life together. You are the foundation of our home."</span>
+                    <span class="msg-author">Milestone Tribute</span>
+                    <span class="msg-text">"25 years of building a home filled with love. You and Amma are the foundation of everything we are."</span>
                 </div>
                 <button class="btn" onclick="goToLevel(2)">Next Level →</button>
             </div>
@@ -182,10 +196,10 @@
         <div class="game-card">
             <div id="game2">
                 <h3>LEVEL 2: ACADEMIC PURSUIT</h3>
-                <p>Tap letters to spell Priyanka's IIT City:</p>
+                <p>Tap the letters to spell Priyanka's IIT City:</p>
                 <div class="answer-box" id="scramble-ans">_ _ _ _ _ _ _ _ _</div>
                 <div class="scramble-container" id="scramble-tiles"></div>
-                <button class="btn" style="background:#444; color:white; font-size:0.8rem; padding:10px 20px;" onclick="initScramble()">Reset</button>
+                <button class="btn" style="background:#444; color:white; font-size:0.8rem; padding:10px 20px; box-shadow:none;" onclick="initScramble()">Reset</button>
             </div>
 
             <div id="reveal2" class="reveal-section">
@@ -196,7 +210,7 @@
                 </div>
                 <div class="msg-card">
                     <span class="msg-author">From Priyanka</span>
-                    <span class="msg-text">"Thank you for supporting my dreams. VGSoM is a reality because of you."</span>
+                    <span class="msg-text">"Thank you for supporting my dreams. My journey at VGSoM is possible because of you."</span>
                 </div>
                 <button class="btn" onclick="goToLevel(3)">Next Level →</button>
             </div>
@@ -216,14 +230,14 @@
             </div>
 
             <div id="reveal3" class="reveal-section">
-                <h2 style="color:var(--success)">PRECISION 100% 🩺</h2>
+                <h2 style="color:var(--success)">PERFECT TIMING! 🩺</h2>
                 <div class="img-row">
                     <img src="madhav1.jpeg" onerror="this.src='madhav1.jpg'">
                     <img src="madhav2.jpeg" onerror="this.src='madhav2.jpg'">
                 </div>
                 <div class="msg-card">
                     <span class="msg-author">From Madhav</span>
-                    <span class="msg-text">"Halfway to being a doctor. I owe my discipline and drive to you."</span>
+                    <span class="msg-text">"Halfway to becoming a doctor. I owe my discipline and drive to your mentorship."</span>
                 </div>
                 <button class="btn" onclick="goToLevel(4)">Next Level →</button>
             </div>
@@ -232,26 +246,22 @@
 
     <div id="level4" class="quest-level">
         <div class="game-card">
-            <div id="game4" style="min-height: 300px; position: relative; overflow:hidden;">
-                <h3>LEVEL 4: THE RUINS HUNT</h3>
-                <p>Catch the 3 flying keys to open the Hampi Gate.</p>
-                <div id="keys-area">
-                    <div class="hidden-key" style="top:20%; left:10%;" onclick="foundKey(this)">🗝️</div>
-                    <div class="hidden-key" style="top:50%; right:20%; animation-duration:1.5s;" onclick="foundKey(this)">🗝️</div>
-                    <div class="hidden-key" style="bottom:20%; left:40%; animation-duration:2.5s;" onclick="foundKey(this)">🗝️</div>
-                </div>
-                <p id="key-count" style="margin-top:150px; font-weight:bold; color:#aaa;">Keys: 0/3</p>
+            <div id="game4">
+                <h3>LEVEL 4: THE BROKEN TABLET</h3>
+                <p>Click the stone pieces to rotate them until they are all upright (text facing up).</p>
+                <div class="tablet-grid" id="tablet-board">
+                    </div>
             </div>
 
             <div id="reveal4" class="reveal-section">
-                <h2 style="color:var(--success)">GATE OPENED! 🏛️</h2>
+                <h2 style="color:var(--success)">HISTORY RESTORED! 🏛️</h2>
                 <div class="img-row">
                     <img src="hampi1.jpeg" onerror="this.src='hampi1.jpg'">
                     <img src="hampi2.jpeg" onerror="this.src='hampi2.jpg'">
                 </div>
                 <div class="msg-card">
-                    <span class="msg-author">Family Trip</span>
-                    <span class="msg-text">"Memories made in stone. Thank you for showing us the beauty of history."</span>
+                    <span class="msg-author">Family Trip Memory</span>
+                    <span class="msg-text">"Exploring the ruins together. Thank you for teaching us that the best legacy is beautiful memories."</span>
                 </div>
                 <button class="btn" onclick="goToLevel(5)">Next Level →</button>
             </div>
@@ -264,19 +274,19 @@
                 <h3>LEVEL 5: THE GOLDEN GUESS</h3>
                 <p>Slide the bar to Amma's age. The number is hidden!</p>
                 <div class="slider-val"><span id="age-val">??</span></div>
-                <input type="range" min="0" max="100" value="0" oninput="updateSliderUI(this.value)" onchange="checkSlider(this.value)">
-                <p style="font-size:0.8rem; color:#aaa;">(Drag and release to check)</p>
+                <input type="range" min="0" max="100" value="0" oninput="updateSliderUI()" onchange="checkSlider(this.value)">
+                <p style="font-size:0.9rem; color:#ccc; margin-top: -20px;">(Drag and release to check)</p>
             </div>
 
             <div id="reveal5" class="reveal-section">
-                <h2 style="color:var(--success)">PERFECT 50! ✨</h2>
+                <h2 style="color:var(--success)">SPOT ON! 50 YEARS! ✨</h2>
                 <div class="img-row">
                     <img src="amma1.jpeg" onerror="this.src='amma1.jpg'">
                     <img src="amma2.jpeg" onerror="this.src='amma2.jpg'">
                 </div>
                 <div class="msg-card">
                     <span class="msg-author">For the Golden Couple</span>
-                    <span class="msg-text">"You made her 50th a festival. Your love for her inspires us all."</span>
+                    <span class="msg-text">"You made her 50th birthday celebration feel like a festival. Your love is inspiring."</span>
                 </div>
                 <button class="btn" onclick="goToLevel(6)">Final Challenge →</button>
             </div>
@@ -287,43 +297,48 @@
         <div class="game-card">
             <h3>FINAL LEVEL: THE CINEPHILE TEST</h3>
             <p>Select the <b>10 Telugu Movies</b> released in 2025.</p>
-            <p style="font-size:0.8rem; color:#ccc;">(Careful! Selecting wrong ones gives an error)</p>
+            <p style="font-size:0.9rem; color:#ccc; margin-bottom: 20px;">(Careful! Wrong choices turn red)</p>
             
             <div id="movie-grid"></div>
             
             <div id="reveal6" class="reveal-section">
-                <h2 style="color:var(--gold)">ALL MILESTONES CLEARED! 🏆</h2>
+                <h2 style="color:var(--gold); font-size: 2.5rem;">ALL MILESTONES CLEARED! 🏆</h2>
                 <button class="btn" onclick="goToLevel(7)">Reveal Final Gift 🎁</button>
             </div>
         </div>
     </div>
 
     <div id="level7" class="quest-level">
-        <div class="game-card">
-            <h1 style="font-size:3rem;">WE LOVE YOU!</h1>
+        <div class="game-card" style="max-width: 800px;">
+            <h1 style="font-size:3.5rem; margin-bottom: 20px;">WE LOVE YOU NANNA!</h1>
             
-            <div id="video-container" style="min-height:200px; display:flex; justify-content:center; align-items:center; margin-top:20px;">
-                <button class="btn" onclick="loadVideo()">▶️ Play Birthday Video</button>
+            <div id="video-container" style="min-height:250px; display:flex; justify-content:center; align-items:center; margin-top:30px;">
+                <button class="btn" onclick="loadVideo()" style="font-size: 1.2rem; padding: 20px 50px;">▶️ Play Birthday Video</button>
             </div>
 
-            <div class="msg-card" style="margin-top:30px;">
-                <span class="msg-author">Final Message</span>
-                <span class="msg-text">"Nanna, you are the silent engine of this family. We celebrate you today and always."</span>
+            <div class="msg-card" style="margin-top:40px; border-color: var(--success);">
+                <span class="msg-author" style="color: var(--success);">Final Message</span>
+                <span class="msg-text" style="font-size: 1.2rem;">"Nanna, you are the silent engine of this family. We celebrate you today and always. Happy Birthday!"</span>
             </div>
             
-            <button class="btn" style="background:#333; font-size:0.8rem; margin-top:30px;" onclick="location.reload()">Replay Game</button>
+            <button class="btn" style="background:rgba(255,255,255,0.1); border: 2px solid #555; color: #ddd; font-size:0.9rem; margin-top:50px; box-shadow: none;" onclick="location.reload()">Replay Game</button>
         </div>
     </div>
 
     <script>
-        // --- CONFETTI ---
+        // --- CONFETTI (MORE & BIGGER) ---
         function spawnConfetti() {
             const el = document.createElement('div'); el.className = 'confetti';
-            el.style.left = Math.random()*100+'vw'; el.style.backgroundColor=['#FFD700','#ff0055','#00ddff'][Math.floor(Math.random()*3)];
-            el.style.width=Math.random()*8+5+'px'; el.style.height=el.style.width; el.style.animationDuration=Math.random()*2+3+'s';
+            el.style.left = Math.random()*100+'vw'; 
+            // More festive colors
+            el.style.backgroundColor=['#FFD700','#FF0099','#00ddff','#39ff14', '#ffffff'][Math.floor(Math.random()*5)];
+            // Bigger pieces
+            el.style.width=Math.random()*12+8+'px'; el.style.height=el.style.width; 
+            el.style.animationDuration=Math.random()*2+2.5+'s';
             document.body.appendChild(el); setTimeout(()=>el.remove(),5000);
         }
-        function burstConfetti() { for(let i=0;i<40;i++) setTimeout(spawnConfetti, i*30); }
+        // Bigger burst (100 particles)
+        function burstConfetti() { for(let i=0;i<100;i++) setTimeout(spawnConfetti, i*20); }
 
         // --- NAVIGATION ---
         function startQuest() {
@@ -337,24 +352,23 @@
             document.getElementById('level'+n).style.display='flex';
             window.scrollTo(0,0);
             if(n===2) initScramble();
+            if(n===4) initTablet();
             if(n===6) initMovies();
         }
 
         // --- GAME 1: MEMORY MATCH ---
-        const icons = ['💍', '❤️', '🏡', '🎉', '💍', '❤️', '🏡', '🎉'];
+        const icons = ['💍', '💖', '🏡', '🎉', '💍', '💖', '🏡', '🎉'];
         let flipped = [];
         let matched = 0;
         
         function initMemory() {
             const board = document.getElementById('memory-board');
             board.innerHTML = '';
-            // Shuffle
             icons.sort(() => Math.random() - 0.5);
             icons.forEach((icon, index) => {
                 const card = document.createElement('div');
                 card.className = 'memory-card hidden';
                 card.dataset.icon = icon;
-                card.dataset.index = index;
                 card.onclick = () => flipCard(card);
                 board.appendChild(card);
             });
@@ -362,25 +376,16 @@
 
         function flipCard(card) {
             if(!card.classList.contains('hidden') || flipped.length >= 2) return;
-            
             card.classList.remove('hidden');
             card.innerText = card.dataset.icon;
             flipped.push(card);
-
             if(flipped.length === 2) {
                 if(flipped[0].dataset.icon === flipped[1].dataset.icon) {
-                    flipped.forEach(c => c.classList.add('matched'));
-                    flipped = [];
-                    matched++;
+                    flipped.forEach(c => { c.classList.add('matched'); c.style.background = 'var(--success)'; });
+                    flipped = []; matched++;
                     if(matched === 4) winLevel(1);
                 } else {
-                    setTimeout(() => {
-                        flipped.forEach(c => {
-                            c.classList.add('hidden');
-                            c.innerText = '';
-                        });
-                        flipped = [];
-                    }, 800);
+                    setTimeout(() => { flipped.forEach(c => { c.classList.add('hidden'); c.innerText = ''; }); flipped = []; }, 800);
                 }
             }
         }
@@ -395,18 +400,12 @@
             container.innerHTML = '';
             const letters = city.split('').sort(() => Math.random() - 0.5);
             letters.forEach(l => {
-                const t = document.createElement('div');
-                t.className = 'letter-tile';
-                t.innerText = l;
+                const t = document.createElement('div'); t.className = 'letter-tile'; t.innerText = l;
                 t.onclick = function() {
-                    typed += l;
-                    document.getElementById('scramble-ans').innerText = typed;
-                    this.style.opacity = '0';
-                    this.style.pointerEvents = 'none';
+                    typed += l; document.getElementById('scramble-ans').innerText = typed;
+                    this.style.opacity = '0'; this.style.pointerEvents = 'none';
                     if(typed === city) winLevel(2);
-                    else if(typed.length === city.length) {
-                        setTimeout(() => { alert("Wrong! Resetting..."); initScramble(); }, 300);
-                    }
+                    else if(typed.length === city.length) { setTimeout(() => { alert("Wrong! Resetting..."); initScramble(); }, 300); }
                 };
                 container.appendChild(t);
             });
@@ -415,74 +414,77 @@
         // --- GAME 3: PULSE ---
         function checkPulse() {
             const bar = document.getElementById('p-bar');
-            const parentWidth = bar.parentElement.offsetWidth;
-            const percent = (bar.offsetLeft / parentWidth) * 100;
-            // Zone is roughly 45% to 55%
-            if(percent >= 42 && percent <= 58) {
-                bar.style.animationPlayState = 'paused';
-                bar.style.background = 'var(--success)';
-                winLevel(3);
-            } else {
-                alert("Missed! Precision required.");
-            }
+            const percent = (bar.offsetLeft / bar.parentElement.offsetWidth) * 100;
+            // Tighter zone: 45% to 55%
+            if(percent >= 45 && percent <= 55) {
+                bar.style.animationPlayState = 'paused'; bar.style.background = 'var(--success)'; winLevel(3);
+            } else { alert("Missed! Need more precision."); }
         }
 
-        // --- GAME 4: KEYS ---
-        let keys = 0;
-        function foundKey(el) {
-            el.style.display = 'none';
-            keys++;
-            document.getElementById('key-count').innerText = `Keys: ${keys}/3`;
-            if(keys === 3) winLevel(4);
+        // --- NEW GAME 4: BROKEN TABLET ---
+        let tabletPieces = [0, 0, 0, 0]; // Stores rotation angles
+        function initTablet() {
+            const board = document.getElementById('tablet-board');
+            board.innerHTML = '';
+            // Use distinct Hampi-themed emojis for the 4 pieces
+            const pieceIcons = ['🛕', '🐘', '🕉️', '🗿'];
+            tabletPieces = tabletPieces.map(() => [90, 180, 270][Math.floor(Math.random()*3)]); // Random initial rotation (not 0)
+            
+            tabletPieces.forEach((angle, i) => {
+                const p = document.createElement('div');
+                p.className = 'tablet-piece';
+                p.innerText = pieceIcons[i];
+                p.style.transform = `rotate(${angle}deg)`;
+                p.onclick = () => rotatePiece(i, p);
+                board.appendChild(p);
+            });
         }
+
+        function rotatePiece(index, element) {
+            tabletPieces[index] = (tabletPieces[index] + 90) % 360;
+            element.style.transform = `rotate(${tabletPieces[index]}deg)`;
+            if(tabletPieces[index] === 0) element.classList.add('correct');
+            else element.classList.remove('correct');
+            checkTabletWin();
+        }
+
+        function checkTabletWin() {
+            if(tabletPieces.every(angle => angle === 0)) winLevel(4);
+        }
+
 
         // --- GAME 5: SLIDER ---
-        function updateSliderUI(val) { document.getElementById('age-val').innerText = "??"; }
+        function updateSliderUI() { document.getElementById('age-val').innerText = "??"; }
         function checkSlider(val) {
             document.getElementById('age-val').innerText = val;
-            if(val == 50) winLevel(5);
-            else alert("Not quite! Try again.");
+            if(val == 50) winLevel(5); else alert("Not quite! Try again.");
         }
 
         // --- GAME 6: 30 MOVIES ---
         const allMovies = [
             // Correct (10)
-            {n:"Game Changer", v:true}, {n:"Daaku", v:true}, {n:"Thandel", v:true}, 
-            {n:"Mirai", v:true}, {n:"Kubera", v:true}, {n:"Sankrant", v:true}, 
-            {n:"Dragon", v:true}, {n:"Hari Hara Veera Mallu", v:true}, {n:"Swayambhu", v:true}, {n:"The Raja Saab", v:true},
+            {n:"Game Changer", v:true}, {n:"Daaku", v:true}, {n:"Thandel", v:true}, {n:"Mirai", v:true}, {n:"Kubera", v:true}, 
+            {n:"Sankrant", v:true}, {n:"Dragon", v:true}, {n:"Hari Hara Veera Mallu", v:true}, {n:"Swayambhu", v:true}, {n:"The Raja Saab", v:true},
             // Wrong (20)
-            {n:"Baahubali", v:false}, {n:"RRR", v:false}, {n:"Pushpa", v:false}, {n:"KGF", v:false}, 
-            {n:"Salaar", v:false}, {n:"Devara", v:false}, {n:"Kalki 2898 AD", v:false}, {n:"HanuMan", v:false}, 
-            {n:"Guntur Kaaram", v:false}, {n:"Arjun Reddy", v:false}, {n:"Eega", v:false}, {n:"Magadheera", v:false},
-            {n:"Pokiri", v:false}, {n:"Kick", v:false}, {n:"Race Gurram", v:false}, {n:"Gabbar Singh", v:false},
-            {n:"Dookudu", v:false}, {n:"Manam", v:false}, {n:"Jersey", v:false}, {n:"Mahanati", v:false}
+            {n:"Baahubali", v:false}, {n:"RRR", v:false}, {n:"Pushpa", v:false}, {n:"KGF", v:false}, {n:"Salaar", v:false}, 
+            {n:"Devara", v:false}, {n:"Kalki 2898 AD", v:false}, {n:"HanuMan", v:false}, {n:"Guntur Kaaram", v:false}, {n:"Arjun Reddy", v:false}, 
+            {n:"Eega", v:false}, {n:"Magadheera", v:false}, {n:"Pokiri", v:false}, {n:"Kick", v:false}, {n:"Race Gurram", v:false}, 
+            {n:"Gabbar Singh", v:false}, {n:"Dookudu", v:false}, {n:"Manam", v:false}, {n:"Jersey", v:false}, {n:"Mahanati", v:false}
         ];
-
         let foundMovies = 0;
-
         function initMovies() {
             const grid = document.getElementById('movie-grid');
             if(grid.children.length > 0) return;
-            
-            // Shuffle
             allMovies.sort(() => Math.random() - 0.5);
-
             allMovies.forEach(m => {
-                const b = document.createElement('div');
-                b.className = 'movie-btn';
-                b.innerText = m.n;
+                const b = document.createElement('div'); b.className = 'movie-btn'; b.innerText = m.n;
                 b.onclick = function() {
-                    if(this.style.background.includes("gold")) return; // Already clicked correctly
-
+                    if(this.style.background.includes("gold") || this.style.background.includes("error")) return;
                     if(m.v) {
-                        this.style.background = "var(--gold)";
-                        this.style.color = "black";
-                        this.style.fontWeight = "bold";
-                        foundMovies++;
-                        if(foundMovies === 10) winLevel(6);
+                        this.style.background = "var(--gold)"; this.style.color = "black"; this.style.fontWeight = "bold";
+                        foundMovies++; if(foundMovies === 10) winLevel(6);
                     } else {
-                        this.style.background = "var(--error)";
-                        alert(`Wrong! '${m.n}' was not released in 2025.`);
+                        this.style.background = "var(--error)"; alert(`Wrong! '${m.n}' was not from 2025.`);
                     }
                 };
                 grid.appendChild(b);
@@ -497,10 +499,9 @@
                 burstConfetti();
             }, 500);
         }
-
         function loadVideo() {
             document.getElementById('video-container').innerHTML = `
-                <video controls autoplay style="width:100%; border:4px solid var(--gold); border-radius:15px;">
+                <video controls autoplay style="width:100%; border:4px solid var(--gold); border-radius:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                     <source src="birthday_wish.mp4" type="video/mp4">
                 </video>`;
         }
