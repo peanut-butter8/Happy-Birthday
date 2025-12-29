@@ -8,247 +8,116 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --gold: #FFD700;
-  --glass: rgba(255,255,255,0.18);
-}
+:root { --gold:#FFD700; }
 
 body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  color: white;
-  background: linear-gradient(-45deg,#ee7752,#e73c7e,#23a6d5,#23d5ab);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+  margin:0;
+  font-family:'Inter',sans-serif;
+  color:white;
+  background:linear-gradient(-45deg,#ee7752,#e73c7e,#23a6d5,#23d5ab);
+  background-size:400% 400%;
+  animation:bg 15s ease infinite;
 }
 
-@keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes bg {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
-/* ---------- GENERAL ---------- */
 .stage {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 30px;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:30px;
 }
 
-.hidden { display: none; }
+.hidden{display:none}
 
-h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  margin-bottom: 10px;
+h1{font-family:'Playfair Display',serif;font-size:3rem}
+
+button{
+  background:var(--gold);
+  border:none;
+  padding:14px 32px;
+  border-radius:30px;
+  font-size:1rem;
+  cursor:pointer;
 }
 
-button {
-  background: var(--gold);
-  color: black;
-  border: none;
-  padding: 14px 32px;
-  font-size: 1rem;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: transform 0.2s;
+/* Progress */
+#progress{position:fixed;top:0;width:100%;height:6px;background:#ffffff33}
+#bar{height:100%;width:0%;background:var(--gold);transition:.6s}
+
+/* Timeline */
+.timeline{display:flex;flex-direction:column;gap:30px;max-width:420px}
+.milestone{
+  background:#ffffff22;
+  padding:22px;
+  border-radius:20px;
+  cursor:pointer;
+}
+.locked{opacity:.4;pointer-events:none}
+
+/* Popup */
+#popup{
+  position:fixed;inset:0;
+  background:#00000099;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.card{
+  background:white;
+  color:black;
+  padding:25px;
+  border-radius:20px;
+  max-width:420px;
+}
+.card img{
+  width:100%;
+  border-radius:14px;
+  margin-bottom:12px;
 }
 
-button:hover { transform: scale(1.08); }
-
-/* ---------- PROGRESS BAR ---------- */
-#progress-container {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 6px;
-  background: rgba(255,255,255,0.2);
-  z-index: 5;
-}
-
-#progress-bar {
-  height: 100%;
-  width: 0%;
-  background: var(--gold);
-  transition: width 0.6s ease;
-}
-
-/* ---------- TIMELINE ---------- */
-.timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
-  max-width: 420px;
-}
-
-.milestone {
-  background: var(--glass);
-  backdrop-filter: blur(8px);
-  padding: 22px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.4s ease;
-}
-
-.milestone span {
-  font-size: 2.2rem;
-}
-
-.milestone:hover {
-  transform: scale(1.05);
-  background: rgba(255,255,255,0.28);
-}
-
-.locked {
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-/* ---------- POPUP ---------- */
-#popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-}
-
-.popup-card {
-  background: white;
-  color: black;
-  padding: 30px;
-  border-radius: 22px;
-  max-width: 420px;
-  animation: pop 0.4s ease;
-}
-
-@keyframes pop {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.popup-card h2 {
-  font-family: 'Playfair Display', serif;
-}
-
-/* ---------- FINAL MESSAGE ---------- */
-#final {
-  flex-direction: column;
-}
-
-#final h1 {
-  font-size: 2.6rem;
+/* Final */
+video{
+  width:100%;
+  max-width:600px;
+  border-radius:20px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- PROGRESS -->
-<div id="progress-container">
-  <div id="progress-bar"></div>
-</div>
+<div id="progress"><div id="bar"></div></div>
 
 <!-- OPENING -->
-<section id="opening" class="stage">
+<section id="open" class="stage">
   <div>
     <h1>Nanna’s Birthday Quest 🎉</h1>
-    <p>A journey through the moments that shaped our family</p>
-    <br>
-    <button onclick="startQuest()">Begin the Journey</button>
+    <p>A journey through love, legacy & family</p><br>
+    <button onclick="start()">Begin</button>
   </div>
 </section>
 
 <!-- JOURNEY -->
 <section id="journey" class="stage hidden">
   <div class="timeline">
-
-    <div class="milestone" onclick="unlock(1)">
-      <span>🥂</span>
-      <h3>25 Years of Togetherness</h3>
-    </div>
-
-    <div class="milestone locked" onclick="unlock(2)">
-      <span>🎓</span>
-      <h3>Priyanka Joins VGSoM</h3>
-    </div>
-
-    <div class="milestone locked" onclick="unlock(3)">
-      <span>🩺</span>
-      <h3>Madhav – Halfway Through MBBS</h3>
-    </div>
-
-    <div class="milestone locked" onclick="unlock(4)">
-      <span>🎂</span>
-      <h3>Amma Turns 50</h3>
-    </div>
-
+    <div class="milestone" onclick="unlock(1)">🥂 25 Years of Togetherness</div>
+    <div class="milestone locked" onclick="unlock(2)">🎓 Priyanka Joins VGSoM</div>
+    <div class="milestone locked" onclick="unlock(3)">🩺 Madhav – Halfway MBBS</div>
+    <div class="milestone locked" onclick="unlock(4)">🎂 Amma Turns 50</div>
   </div>
 </section>
 
 <!-- POPUP -->
 <div id="popup" class="hidden">
-  <div class="popup-card">
-    <h2 id="popup-title"></h2>
-    <p id="popup-text"></p>
-    <br>
-    <button onclick="closePopup()">Continue</button>
-  </div>
-</div>
-
-<!-- FINAL -->
-<section id="final" class="stage hidden">
-  <h1>Happy Birthday Nanna ❤️</h1>
-  <p>
-    This journey exists because of you.  
-    Thank you for the love, strength, and values that shaped our lives.
-  </p>
-  <br>
-  <p>With all our love 💛</p>
-</section>
-
-<script>
-let current = 0;
-
-const milestones = {
-  1: {
-    title: "🥂 25 Years of Togetherness",
-    text: "Twenty-five years ago, two lives chose to walk together — building the foundation of love, patience, and strength that shaped everything we are today."
-  },
-  2: {
-    title: "🎓 Priyanka Joins VGSoM",
-    text: "A dream taking flight. This milestone reflects belief, sacrifice, and unwavering support turning into achievement."
-  },
-  3: {
-    title: "🩺 Madhav – Halfway Through MBBS",
-    text: "A journey of discipline and resilience. Halfway through, yet fully committed — guided by values learned at home."
-  },
-  4: {
-    title: "🎂 Amma Turns 50",
-    text: "Fifty years of love, strength, and grace — the heart that holds this family together and makes it whole."
-  }
-};
-
-function startQuest() {
-  document.getElementById("opening").classList.add("hidden");
-  document.getElementById("journey").classList.remove("hidden");
-}
-
-function unlock(n) {
-  if (n !== current + 1) return;
-  current = n;
-
-  document.getElementById("popup-title").innerText = milestones[n].title;
-  document.getElementById("popup-text").innerText = milestones[n].text;
-  document.getElementById("popup").classList.remove("hidden");
-
-  document.getElementById("progress-bar").style.width = `${n * 25}%`;
-
-  if (n < 4) {
-    document.q
-
+  <div class="card">
+    <h2 id="ptitle"></h2>
+    <img id="pimg">
+    <p id="ptext"></p><br>
+    <button oncli
